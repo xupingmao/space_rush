@@ -1,6 +1,7 @@
 var imgList = {};
 var width = canvas.width;
 var height = canvas.height;
+var gameState = "start";
 function init(callback){
 	var progress = 0;
 	var target = 2;

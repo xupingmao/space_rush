@@ -6,25 +6,14 @@ JS StarWar
 </head>
 
 <body style="margin:0;padding:0;">
-<canvas id="game"></canvas>
-<script >
-var canvas = document.getElementById("game");
-canvas.width = document.body.clientWidth;
-canvas.height = document.body.clientHeight;
-var ctx = canvas.getContext("2d");
-var funcs = "";
-/*
-for(var i in ctx){
-	console.log(i);
-}
-alert(funcs);
-ctx.font="20px Verdana";
-ctx.fillText('Hello,World!',100,100);
-ctx.strokeText("go",50,50);
-*/
-</script>
-<script src="./js/utils.js"></script>
-<script src="./js/load.js"></script>
+<script src="./js/quark.base-1.0.0.min.js"></script>
+
+<div id="container" style="position:absolute;left:0;top:0;width:100%;height:100%;background:#fff;"></div>
+<div id="fps" style="position:absolute;left:0;top:0;"></div>
+<img id="background" src="img/bgImg.jpg" style="display:none;" />
+<img id="marine" src="img/marine.gif" style="display:none;" />
+<script src="./js/actor.js"></script>
 <script src="./js/start.js"></script>
+
 </body>
 </html>

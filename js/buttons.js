@@ -1,4 +1,4 @@
-var NormalBtn = function(_id, _text, _x, _y){
+﻿var NormalBtn = function(_id, _text, _x, _y){
 	var _btn = new Q.Button({id:_id, image:Q.getDOM("button"), 
 	x:_x, y:_y, width:99, height:38,
 	scaleX:2,
@@ -19,5 +19,5 @@ var NormalBtn = function(_id, _text, _x, _y){
 	return _btn;
 }
 
-var startBtn = new NormalBtn("start",'Start',600,250)
-var aboutBtn = new NormalBtn("about",'About',600,350)
+var startBtn = new NormalBtn("start",'开始',600,250)
+var aboutBtn = new NormalBtn("about",'关于',600,350)

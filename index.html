@@ -3,18 +3,42 @@
 <title>
 JS StarWar
 </title>
+<meta charset="utf-8">
+
+<style type="text/css">
+    .hide {
+        display: none;
+    }
+    body, button :hover, input :hover{
+        cursor: url('img/sc.cur'), default;
+    }
+</style>
 </head>
 
 <body style="margin:0;padding:0;">
-<script src="./js/quark.base-1.0.0.min.js"></script>
+<script src="./js/quark.base-1.0.0.js"></script>
 
 <div id="container" style="position:absolute;left:0;top:0;width:1000;height:600;background:#fff;"></div>
 <div id="fps" style="position:absolute;left:0;top:0;"></div>
-<img id="background" src="img/start.png" style="display:none;" />
-<img id="marine" src="img/marine.gif" style="display:none;" />
-<img id="button" src="img/btn.png" style="display:none;" />
-<script src="./js/buttons.js"></script>
-<script src="./js/actor.js"></script>
+
+<img id="img_background" src="img/start.png" style="display:none;" />
+<img id="img_about"      src="img/about.jpg" style="display:none"/>
+<img id="img_bg1"        src="img/bgImg.jpg" class="hide">
+<img id="img_photon_tower" src="img/tower.gif" class="hide"/>
+<img id="img_tower"      src="img/mainTower.png" class="hide"/>
+<img id="marine"         src="img/marine.gif" style="display:none;" />
+<img id="marine_atk"     src="img/marine_atk.gif" style="display:none" />
+<img id="button"         src="img/btn.png" style="display:none;" />
+
+<script type="text/javascript" src="./js/globals.js"></script>
+<script type="text/javascript" src="./js/GameStage.js"></script>
+<script type="text/javascript" src="./js/animate.js"></script>
+<script type="text/javascript" src="./js/assets.js"></script>
+<script type="text/javascript" src="./js/audio.js"></script>
+<script type="text/javascript" src="./js/about.js"></script>
+<!-- <script src="./js/buttons.js"></script> -->
+<script src="./js/marine.js"></script>
+<script type="text/javascript" src="./js/tower.js"></script>
 <script src="./js/start.js"></script>
 
 </body>

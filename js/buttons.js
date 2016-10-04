@@ -1,9 +1,12 @@
 ﻿var NormalBtn = function(_id, _text, _x, _y){
 	var _btn = new Q.Button({id:_id, image:Q.getDOM("button"), 
-	x:_x, y:_y, width:99, height:38,
-	scaleX:2,
-	scaleY:2,
-	up:{rect:[0,0,99,38]},
+	x:_x,
+	y:_y,
+	width:99,
+	height:38,
+	scaleX:1,
+	scaleY:1,
+	up:  {rect:[0,0,99,38]},
 	over:{rect:[0,38,99,38]},
 	down:{rect:[0,38,99,38]},
 	disabled:{rect:[0,0,99,38]}
@@ -19,5 +22,5 @@
 	return _btn;
 }
 
-var startBtn = new NormalBtn("start",'开始',600,250)
-var aboutBtn = new NormalBtn("about",'关于',600,350)
+var startBtn = new NormalBtn("start",'开始',GameStage.getWidth() * 0.2,250)
+var aboutBtn = new NormalBtn("about",'关于',GameStage.getHeight() * 0.2,350)

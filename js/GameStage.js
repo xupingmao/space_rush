@@ -35,10 +35,30 @@ GameStage.getScaleY = function (clz, height) {
 }
 
 
+GameStage.fixProps = GameStage.prototype.fixProps = function (props) {
+    if (props.mapX) {
+        props.x = stage.getPositionX(props.mapX);
+    }
+    if (props.mapY) {
+        props.y = stage.getPositionY(props.mapY);
+    }
+}
+
+
 GameStage.prototype.getPosition = function (x, y) {
     if (x < 0) x += this.mapWidth;
     if (y < 0) y += this.mapHeight;
     return [x * this.unitWidth , y * this.unitHeight];
+}
+
+GameStage.prototype.getPositionX = function (x) {
+    if (x < 0) x += this.mapWidth;
+    return x * this.unitWidth;
+}
+
+GameStage.prototype.getPositionY = function(y) {
+    if (y < 0) y += this.mapHeight;
+    return y * this.unitHeight;
 }
 
 GameStage.prototype.initMap = function () {
@@ -177,10 +197,14 @@ GameStage.prototype.update = function (timeInfo) {
     var widthRatio = this.unitWidth;
     var heightRatio = this.unitHeight;
 
+    this.graphics.lineStyle(1, "#f00");
+
     for (var i = 0; i < this.usedPositionList.length; i++) {
         var position = this.usedPositionList[i];
-        var x = position[0] * widthRatio, y = position[1] * heightRatio;
-        this.graphics.lineStyle(1, "#f00").beginFill("#0f0", 0.5).drawRect(x,y,widthRatio, heightRatio).endFill();
+        var x = position[0] * widthRatio, 
+            y = position[1] * heightRatio;
+        this.graphics.beginFill("#0f0", 0.5).drawRect(x,y,widthRatio, heightRatio); 
+        // endFill();
     }
 
     this.graphics.endFill();

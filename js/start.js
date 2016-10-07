@@ -81,21 +81,42 @@ function gameStart () {
 	// new_container.addChild(GAME_BG1);
 	new_container.addChild(stage.getMap());
 
-	var position = stage.getPosition(1, 1);
-	var marine = new Marine({id: "m1", x: position[0], y:position[1]});
-	marine.state = "right";
+	for (var i = 0; i < stage.mapHeight; i++) {
+		var mleft = new Marine({id: "m1", mapX: 1, mapY: i, state: "right"}); // left
+		var mright = new Marine({mapX: 40, mapY: i});
+		new_container.addChild(mleft);
+		new_container.addChild(mright); 
+	}
 
-	new_container.addChild(marine);
+	for (var i = 0; i < 20; i++) {
+		var m1 = new Marine({mapX: i, mapY: 0, state: "right"});
+		var m2 = new Marine({mapX: i, mapY: 40});
+		new_container.addChild(m1, m2); 
+	}
+
+	var m2 = new Marine( {mapX: 30, mapY: 20} ); // right
+	new_container.addChild(m2);
+
+	var m3 = new Marine( {mapX: 12, mapY: 0}); // up
+	new_container.addChild(m3); 
+
+	var m4 = new Marine( {mapX: 12, mapY: 50}); // down
+	new_container.addChild(m4);
 
 	var position = stage.getPosition(-30, 20);
 	var tower = new Tower({id: "mainTower", x: position[0], y: position[1]});
 	new_container.addChild(tower);
 	stage.addTower(tower);
 
-	var position = stage.getPosition(10,10);
-	var normalTower = new NormalTower({id: "normalTower", x : position[0], y:position[1]});
+	var normalTower = new NormalTower({mapX:10, mapY:10});
 	new_container.addChild(normalTower);
+
+	var t2 = new NormalTower({mapX:10,mapY:20});
+	new_container.addChild(t2);
+
 	stage.addTower(normalTower);
+	stage.addTower(t2);
+
 
 	animate_forward(stage, new_container);
 	// window.stage.removeChildAt(0);

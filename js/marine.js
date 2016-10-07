@@ -1,12 +1,18 @@
 var Marine = function(props){
+
+	GameStage.fixProps(props);
+
 	Marine.superClass.constructor.call(this,props);
 	this.init();
+	this.width = 32;
+	this.height = 32;
 }
 Q.inherit(Marine,Q.DisplayObjectContainer);
 
 Marine.prototype.mapWidth = 2;
 Marine.prototype.mapHeight = 2;
-Marine.prototype.width = 32;
+Marine.prototype.width = 32; // 无效，被DisplayObject覆盖了
+Marine.prototype.height = 32;
 
 Marine.prototype.createMovieClip = function (id, domId, fps) {
 	fps = fps || 5;
@@ -103,7 +109,7 @@ Marine.prototype.moveTo = function (target) {
 		return;
 	}
 
-	Q.trace("moveTo ", target.id);
+	// Q.trace("moveTo ", target.id);
 
 	// var distance = computeDistance(this, target);
 
@@ -114,23 +120,62 @@ Marine.prototype.moveTo = function (target) {
 	// 	return;
 	// }
 
-	if (this.x <= target.x) {
-		if (target.y > this.y) {
+	var x = this.x;
+	var y = this.y;
+	var width = this.width;
+	var height = this.height;
+	var range = this.range;
+	
+	// 在目标左边
+	if (x < target.x) {
+
+		// 目标下方
+		if (y + height > target.y + target.height) {
+			this.state = "up";
+		// 目标上方
+		} else if (y < target.y) {
 			this.state = "down";
 		} else {
-			this.state = "right";
-			if (this.x + this.range >= target.x) {
+			if (x + range >= target.x) {
 				this.state = "attack_right";
-				this.attack(target);
+			} else {
+				this.state = "right";
 			}
 		}
-	} else if (this.x >= target.x && this.x <= target.x + target.width) {
+	} else if (x >= target.x && x + width <= target.x + target.width) {
+		// 在目标上下
 		// this.y < target.y -> attack_down
-
+		// 目标上方
+		if (this.y < target.y) {
+			if (this.y + this.range < target.y) {
+				this.state = "attack_down";
+			} else {
+				this.state = "down";
+			}
+		}
 		// this.y < target.y -> attack_up
+		// 目标下方
+		else if (y > target.y) {
+			if (y - target.y - target.height < this.range) {
+				this.state = "attack_up";
+			} else {
+				this.state = "up";
+			}
+		}
+
 	} else {
+		// 在目标右边
 		// this.x > target.x + target.width -> attack_left
 
+		if (y + height > target.y + target.height) {
+			this.state = "up";
+		} else if (this.y < target.y) {
+			this.state = "down";
+		} else if (this.x - (target.x + target.width) < this.range) {
+			this.state = "attack_left";
+		} else {
+			this.state = "left";
+		}
 	}
 }
 
@@ -165,12 +210,9 @@ Marine.prototype.update = function(){
 		this.getChildAt(0).play(); // play movie clip
 	}
 
-	if (this.state == "attack_right") {
+	if (this.state.startsWith("attack")) {
 		window.audioManager.play("marine_atk");
-	} else if (this.state == "attack_left") {
-		window.audioManager.play("marine_atk");
-	}
-
+	} 
 	// if (this.state == this.prev_state) {
 	// 	return;
 	// }

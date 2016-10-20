@@ -17,6 +17,9 @@ GameStage.unitHeight = GameStage.prototype.unitHeight = 16;
 GameStage.mapWidth   = GameStage.prototype.mapWidth   = 100;
 GameStage.mapHeight  = GameStage.prototype.mapHeight  = 60;
 
+GameStage.width = GameStage.unitWidth * GameStage.mapWidth;
+GameStage.height = GameStage.unitHeight * GameStage.mapHeight;
+
 GameStage.getWidth = function () {
     return GameStage.unitWidth * GameStage.mapWidth;
 }

@@ -5,7 +5,7 @@
  */
 
 
-function createImage (id, width, height) {
+function createBackgroundImage (id, width, height) {
     // body...
 
     // var element = document.getElementById(id);
@@ -17,9 +17,9 @@ function createImage (id, width, height) {
     });
 }
 
-window.START_BG = createImage("img_background", 1200, 748);
-window.ABOUT_BG = createImage("img_about", 1920, 1200);
-window.GAME_BG1 = createImage("img_bg1", 756, 512);
+window.START_BG = createBackgroundImage("img_background", 1200, 748);
+window.ABOUT_BG = createBackgroundImage("img_about", 1920, 1200);
+window.GAME_BG1 = createBackgroundImage("img_bg1", 756, 512);
 
 /**
  * buttons
@@ -45,7 +45,7 @@ var NormalBtn = function(_id, _text, _x, _y){
     return _btn;
 }
 
-var START_BTN = new NormalBtn("start",'开始',SC_WIDTH / 10 * 2,250);
-var ABOUT_BTN = new NormalBtn("about",'关于',SC_WIDTH / 10 * 2,350);
-var BACK_BTN  = new NormalBtn("back", "返回", SC_WIDTH * 0.2, 100);
+var START_BTN = new NormalBtn("start",'开始', GameStage.width * 0.2,250);
+var ABOUT_BTN = new NormalBtn("about",'关于', GameStage.width * 0.2,350);
+var BACK_BTN  = new NormalBtn("back", "返回", GameStage.width * 0.2,100);
 

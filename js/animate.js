@@ -1,10 +1,10 @@
 
 function animate_new_container() {
     var new_container = new Q.DisplayObjectContainer({
-        x: SC_WIDTH,
+        x: GameStage.width,
         y: 0,
-        width: SC_WIDTH,
-        height: SC_HEIGHT
+        width: GameStage.width,
+        height: GameStage.height
     });
     return new_container;
 }
@@ -16,7 +16,7 @@ function animate_forward(stage, new_container) {
 
     var delay_time = 200;
 
-    var tween1 = new Q.Tween(old_container, {x : -SC_WIDTH}, {time:delay_time, /* ease: Q.Easing.Cubic.EaseOut */});
+    var tween1 = new Q.Tween(old_container, {x : -GameStage.width}, {time:delay_time, /* ease: Q.Easing.Cubic.EaseOut */});
     var tween2 = new Q.Tween(new_container, {x: 0},          {time:delay_time, /* ease: Q.Easing.Cubic.EaseIn */});
 
     tween1.start();
@@ -38,7 +38,7 @@ function animate_back() {
     var delay_time = 200;
 
     var tween1 = new Q.Tween(target, {x : 0}, {time:delay_time});
-    var tween2 = new Q.Tween(now, {x: SC_WIDTH},          {time:delay_time});
+    var tween2 = new Q.Tween(now, {x: GameStage.width},          {time:delay_time});
 
     tween1.start();
     tween2.start();

@@ -16,16 +16,19 @@ function displayAboutInformation () {
     //     width : SC_WIDTH * 0.5,
     //     height : 40
     // } );
+
+    /*
     var text = new Q.Text();
 
-    text.x = SC_WIDTH * 0.2;
-    text.y = SC_HEIGHT * 0.2;
+    text.x = GameStage.width * 0.2;
+    text.y = GameStage.height * 0.2;
     text.text = "Hello,World";
     text.font = "25px arial";
     text.color = "green";
 
     new_container.addChild(text);
-
+    */
+    
     new_container.addChild(BACK_BTN);
 
     animate_forward(window.stage, new_container);

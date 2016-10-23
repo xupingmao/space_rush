@@ -15,3 +15,6 @@ MOUSEOUT_EVENT  = Q.supportTouch ? "touchend" : "mouseout";
 
 
 FPS = 30;
+
+// 地图一个单元的大小
+MAP_UNIT = 16;

@@ -12,8 +12,8 @@ var GameStage = function (props) {
 
 Q.inherit(GameStage, Q.Stage);
 
-GameStage.unitWidth  = GameStage.prototype.unitWidth  = 16;
-GameStage.unitHeight = GameStage.prototype.unitHeight = 16;
+GameStage.unitWidth  = GameStage.prototype.unitWidth  = MAP_UNIT;
+GameStage.unitHeight = GameStage.prototype.unitHeight = MAP_UNIT;
 GameStage.mapWidth   = GameStage.prototype.mapWidth   = 100;
 GameStage.mapHeight  = GameStage.prototype.mapHeight  = 60;
 
@@ -99,8 +99,8 @@ GameStage.prototype.getMap = function () {
 }
 
 GameStage.prototype.setMapTarget = function (target, value) {
-    var mapX = parseInt(target.x / this.unitWidth);
-    var mapY = parseInt(target.y / this.unitHeight);
+    var mapX = parseInt(target.x / MAP_UNIT);
+    var mapY = parseInt(target.y / MAP_UNIT);
 
     // Q.trace("setMapTarget, targetId:", target.id, "mapX:", mapX, "mapY:", mapY, target.mapWidth, target.mapHeight);
     for (var i = mapX; i < mapX + target.mapWidth; i++) {
@@ -136,13 +136,19 @@ GameStage.prototype.findUsedPositions = function () {
     }
 }
 
+// target需要读取x,y,width,height等属性
 GameStage.prototype.releaseMapPosition = function (target) {
+    this.setMapTarget(target, 0);
+}
+
+GameStage.prototype.releaseMapPositionEx = function(x,y) {
+    var target = {x : x, y : y , mapWidth : 1, mapHeight : 1};
     this.setMapTarget(target, 0);
 }
 
 GameStage.prototype.addEntity = function (target) {
     this.addChild(target);
-    this.takeMapPosition(target);
+    this.takeMapPosition(target.x, target.y);
 }
 
 GameStage.prototype.canWalk = function (x, y) {

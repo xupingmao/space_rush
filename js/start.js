@@ -102,10 +102,10 @@ function gameStart () {
 	new_container.addChild(tower);
 	stage.addTower(tower);
 
-	var t1 = new Tower({mapX:10, mapY:10});
+	var t1 = new Tower({mapX:15, mapY:10});
 	new_container.addChild(t1);
 
-	var t2 = new Tower({mapX:10,mapY:20});
+	var t2 = new Tower({mapX:15,mapY:20});
 	new_container.addChild(t2);
 
 	stage.addTower(t1);

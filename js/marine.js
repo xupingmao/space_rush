@@ -96,7 +96,7 @@ Marine.prototype.init = function(){
 	this.addChild(this.body);
 	this.speed = 2;
 	this.state = "stop";
-	this.range = GameStage.unitWidth * 5;
+	this.range = 5;
 }
 
 Marine.prototype.rect = function(){
@@ -106,6 +106,10 @@ Marine.prototype.rect = function(){
 Marine.prototype.moveTo = function (target) {
 
 	if (target == null) {
+		return;
+	}
+
+	if (this.x % MAP_UNIT != 0 || this.y % MAP_UNIT != 0) {
 		return;
 	}
 
@@ -120,34 +124,40 @@ Marine.prototype.moveTo = function (target) {
 	// 	return;
 	// }
 
-	var x = this.x;
-	var y = this.y;
-	var width = this.width;
-	var height = this.height;
+	var x = parseInt(this.x / MAP_UNIT) ;
+	var y = parseInt(this.y / MAP_UNIT) ;
+
+	var width = parseInt(this.width / MAP_UNIT);
+	var height = parseInt(this.height / MAP_UNIT);
 	var range = this.range;
+
+	var th = parseInt(target.height / MAP_UNIT);
+	var tw = parseInt(target.width / MAP_UNIT);
+	var tx = parseInt(target.x / MAP_UNIT);
+	var ty = parseInt(target.y / MAP_UNIT);
 	
 	// 在目标左边
-	if (x < target.x) {
+	if (x < tx) {
 
 		// 目标下方
-		if (y + height > target.y + target.height) {
+		if (y + height > ty + th) {
 			this.state = "up";
 		// 目标上方
-		} else if (y < target.y) {
+		} else if (y < ty) {
 			this.state = "down";
 		} else {
-			if (x + range >= target.x) {
+			if (x + range >= tx) {
 				this.state = "attack_right";
 			} else {
 				this.state = "right";
 			}
 		}
-	} else if (x >= target.x && x + width <= target.x + target.width) {
+	} else if (x >= tx && x + width <= tx + tw) {
 		// 在目标上下
 		// this.y < target.y -> attack_down
 		// 目标上方
-		if (this.y < target.y) {
-			if (this.y + this.range < target.y) {
+		if (y < ty) {
+			if (y + range < ty) {
 				this.state = "attack_down";
 			} else {
 				this.state = "down";
@@ -155,8 +165,8 @@ Marine.prototype.moveTo = function (target) {
 		}
 		// this.y < target.y -> attack_up
 		// 目标下方
-		else if (y > target.y) {
-			if (y - target.y - target.height < this.range) {
+		else if (y > ty) {
+			if (y - ty - th < range) {
 				this.state = "attack_up";
 			} else {
 				this.state = "up";
@@ -167,14 +177,60 @@ Marine.prototype.moveTo = function (target) {
 		// 在目标右边
 		// this.x > target.x + target.width -> attack_left
 
-		if (y + height > target.y + target.height) {
+		if (y + height > ty + th) {
 			this.state = "up";
-		} else if (this.y < target.y) {
+		} else if (y < ty) {
 			this.state = "down";
-		} else if (this.x - (target.x + target.width) < this.range) {
+		} else if (x - (tx + tw) < range) {
 			this.state = "attack_left";
 		} else {
 			this.state = "left";
+		}
+	}
+
+	var mx = x;
+	var my = y;
+
+	if (this.state == "left") {
+		if (!can_left(this)) {
+			// 尝试上下
+			if (can_up(this)) {
+				this.state = "up";
+			} else if (can_down(this)) {
+				this.state = "down";
+			} else {
+				this.state = "still";
+			}
+		}
+	} else if (this.state == "right") {
+		if (!can_right(this)) {
+			if (can_up(this)) {
+				this.state = "up";
+			} else if (can_down(this)) {
+				this.state = "down";
+			} else {
+				this.state = "still";
+			}
+		}
+	} else if (this.state == "up") {
+		if (!can_up(this)) {
+			if (can_left(this)) {
+				this.state = "left";
+			} else if (can_right(this)) {
+				this.state = "right";
+			} else {
+				this.state = "still";
+			}
+		}
+	} else if (this.state == "down") {
+		if (!can_down(this)) {
+			if (can_left(this)) {
+				this.state = "left";
+			} else if (can_right(this)) {
+				this.state = "right";
+			} else {
+				this.state = "still";
+			}
 		}
 	}
 }
@@ -197,6 +253,12 @@ Marine.prototype.update = function(){
 	var nearstTower = stage.getNearestTower(this);
 	this.moveTo(nearstTower);
 
+	var state = this.state;
+
+	if (state == "still") {
+		return;
+	}
+
 	if (this.state == "right") {
 		if (this.x + this.width + this.speed >= GameStage.getWidth()) {
 			this.state = "stop";
@@ -218,7 +280,9 @@ Marine.prototype.update = function(){
 	// }
 
 	this.removeAllChildren();
+	
 	stage.releaseMapPosition(this);
+
 	if(this.state == 'left'){
 		// this.addChild(this.left);
 		this.addChildAt(this.left,0);

@@ -18,4 +18,13 @@ function InitControlBar(container) {
 
     container.addChild(controlBar);
 
+    var target = {
+        x : 0, 
+        y : 0,
+        mapWidth: 10,
+        mapHeight: GameStage.mapHeight
+    };
+
+    stage.takeMapPosition(target);
+
 }

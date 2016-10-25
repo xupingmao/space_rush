@@ -7,6 +7,7 @@
 var PLAY_AUDIO  = new Audio("./audio/Heaven's Devils.mp3",true,false,true);
 var START_AUDIO = new Audio("./audio/Resurrection.mp3", true, false, true);
 var MARINE_ATK  = new Audio("./audio/marineAtk.wav", true, false, true);
+var MARINE_DIE  = new Audio("./audio/marineDie.wav", true, false, true);
 var GAME_AUDIO1 = new Audio("./audio/");
 
 var DISABLE_AUDIO = "true" == Q.getUrlParams()["disableAudio"];
@@ -16,6 +17,7 @@ var AudioManager = function () {
         "start": START_AUDIO,
         "about": null,
         "marine_atk": MARINE_ATK,
+        "marine_die": MARINE_DIE,
         "game1": PLAY_AUDIO,
     }
 

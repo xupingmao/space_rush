@@ -17,7 +17,7 @@ function animate_forward(stage, new_container) {
     var delay_time = 200;
 
     var tween1 = new Q.Tween(old_container, {x : -GameStage.width}, {time:delay_time, /* ease: Q.Easing.Cubic.EaseOut */});
-    var tween2 = new Q.Tween(new_container, {x: 0},          {time:delay_time, /* ease: Q.Easing.Cubic.EaseIn */});
+    var tween2 = new Q.Tween(new_container, {x: 0},                 {time:delay_time, /* ease: Q.Easing.Cubic.EaseIn */});
 
     tween1.start();
     tween2.start();

@@ -313,3 +313,12 @@ Marine.prototype.update = function(){
 	stage.takeMapPosition(this);
 	// this.prev_state = this.state;
 }
+
+Marine.prototype.attacked = function (target) {
+	this.life -= target.physicalDamage;
+}
+
+Marine.prototype.die = function () {
+	stage.releaseMapPosition(this);
+	window.audioManager.play("marine_die");
+}

@@ -49,6 +49,8 @@ Tower = function (props) {
     this.height = this.mapHeight * MAP_UNIT;
 
     this.bullets = [];
+
+    this.range = 20;
 }
 
 Q.inherit(Tower, Q.DisplayObjectContainer);
@@ -74,9 +76,17 @@ Tower.prototype.update = function (timeInfo) {
     var targetRef = {};
     var self = this;
 
+    if (this.bullets.length > 0) {
+        var bullet = this.bullets[0];
+        if (bullet.isEnd()) {
+            this.bullets.pop();
+            this.parent.removeChild(bullet);
+        }
+    }
+
     stage.eachUnit(function (i, unit) {
         // check
-        if (map_distance(self, unit) <= 10) {
+        if (map_distance(self, unit) <= self.range) {
             targetRef.target = unit;
             return true;
         }
@@ -85,11 +95,10 @@ Tower.prototype.update = function (timeInfo) {
     var target = targetRef.target;
 
     if (target == null) {
-        this.clearBullets();
         return;
     }
 
-    Q.trace("tower target: ", target);
+    // Q.trace("tower target: ", target);
 
     if (this.bullets.length == 0) {
         var x = this.x + this.width / 2;
@@ -99,12 +108,6 @@ Tower.prototype.update = function (timeInfo) {
         this.parent.addChild(bullet);
         bullet.attack(target);
         this.bullets.push(bullet);
-    } else {
-        var bullet = this.bullets[0];
-        if (bullet.isEnd()) {
-            this.bullets.pop();
-            this.parent.removeChild(bullet);
-        }
     }
     return true;
 }

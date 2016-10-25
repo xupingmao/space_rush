@@ -9,6 +9,11 @@ var TowerBullet = function(props){
 
     TowerBullet.superClass.constructor.call(this,props);
     this.init();
+
+    this.physicalDamage = 5;
+
+    this.completed = false;
+    this.target = null;
 }
 
 Q.inherit(TowerBullet,Q.MovieClip);
@@ -24,12 +29,23 @@ TowerBullet.prototype.init = function () {
 TowerBullet.prototype.attack = function (target) {
     this.targetX = target.x;
     this.targetY = target.y;
-    var tween = new Q.Tween(this, {x: target.x, y: target.y}, {time: 500, /* ease: Q.Easing.Cubic.EaseOut */});
+
+    this.target = target;
+    var self = this;
+    
+    var tween = new Q.Tween(this, {x: target.x, y: target.y}, {time: 500, onComplete: function () {
+        self.onComplete();
+    }});
     tween.start();
     Q.trace("bullet attack", target);
-    // target.life -= 5;
+    target.attacked(this);
 }
 
 TowerBullet.prototype.isEnd = function () {
-    return Math.abs(this.targetX - this.x + this.targetY - this.y) < 0.5;
+    return this.completed;
+}
+
+TowerBullet.prototype.onComplete = function () {
+    this.completed = true;
+    if (this.target) this.target.attacked(this);
 }

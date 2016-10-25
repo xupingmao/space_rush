@@ -240,25 +240,30 @@ GameStage.prototype.update = function (timeInfo) {
     // this.graphics.endFill();
 }
 
-GameStage.prototype.addUnit = function (unit) {
+GameStage.prototype.addUnit = function (newUnit) {
     // find a null place
     for (var i = 0; i < this.unitList.length; i++) {
         var unit = this.unitList[i];
         if (unit == null) {
-            this.unitList[i] = unit;
+            this.unitList[i] = newUnit;
             return;
         }
     }
-    this.unitList.push(unit);
+    this.unitList.push(newUnit);
 }
 
 GameStage.prototype.eachUnit = function (func) {
+    // Q.trace("eachUnit");
     for (var i = 0; i < this.unitList.length; i++) {
         var unit = this.unitList[i];
         if (unit == null) {
             continue;
         }
         if (unit.life <= 0) {
+            if (unit.parent) {
+                unit.parent.removeChild(unit);
+                unit.die();
+            }
             // unit.parent.removeChild(unit);
             this.unitList[i] = null;
             continue;

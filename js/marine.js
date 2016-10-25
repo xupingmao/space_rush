@@ -6,6 +6,9 @@ var Marine = function(props){
 	this.init();
 	this.width = 32;
 	this.height = 32;
+	this.life = 10;
+
+	stage.addUnit(this);
 }
 Q.inherit(Marine,Q.DisplayObjectContainer);
 

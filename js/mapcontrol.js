@@ -114,3 +114,13 @@ function can_down(obj) {
     var my = parseInt(y/MAP_UNIT);
     return is_rect_free(mx, my+obj.mapHeight, obj.mapWidth, 1);
 }
+
+function map_distance(a, b) {
+    // Q.trace("a:" , a, "b: ", b);
+    var x = a.x - b.x;
+    var y = a.y - b.y;
+    var d = x*x + y*y;
+    d = Math.sqrt(d) / MAP_UNIT;
+    // Q.trace("map_distance: ", d);
+    return d;
+}

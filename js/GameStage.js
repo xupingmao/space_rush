@@ -8,6 +8,7 @@ var GameStage = function (props) {
     GameStage.superClass.constructor.call(this, props);
     this.initMap();
     this.frames = 0;
+    this.unitList = [];
 }
 
 Q.inherit(GameStage, Q.Stage);
@@ -237,4 +238,35 @@ GameStage.prototype.update = function (timeInfo) {
     //     }
     // }
     // this.graphics.endFill();
+}
+
+GameStage.prototype.addUnit = function (unit) {
+    // find a null place
+    for (var i = 0; i < this.unitList.length; i++) {
+        var unit = this.unitList[i];
+        if (unit == null) {
+            this.unitList[i] = unit;
+            return;
+        }
+    }
+    this.unitList.push(unit);
+}
+
+GameStage.prototype.eachUnit = function (func) {
+    for (var i = 0; i < this.unitList.length; i++) {
+        var unit = this.unitList[i];
+        if (unit == null) {
+            continue;
+        }
+        if (unit.life <= 0) {
+            // unit.parent.removeChild(unit);
+            this.unitList[i] = null;
+            continue;
+        }
+        var result = func(i, unit);
+        if (result == true) {
+            // break the loop
+            return;
+        }
+    }
 }

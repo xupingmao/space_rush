@@ -8,6 +8,7 @@ var Marine = function(props){
 	this.height = 32;
 	this.life = 10;
 
+	this.unitType = "marine";
 	stage.addUnit(this);
 }
 Q.inherit(Marine,Q.DisplayObjectContainer);
@@ -283,8 +284,6 @@ Marine.prototype.update = function(){
 	// }
 
 	this.removeAllChildren();
-	
-	stage.releaseMapPosition(this);
 
 	if(this.state == 'left'){
 		// this.addChild(this.left);
@@ -310,7 +309,6 @@ Marine.prototype.update = function(){
 	} else {
 		this.addChild(this.left);
 	}
-	stage.takeMapPosition(this);
 	// this.prev_state = this.state;
 }
 
@@ -319,6 +317,6 @@ Marine.prototype.attacked = function (target) {
 }
 
 Marine.prototype.die = function () {
-	stage.releaseMapPosition(this);
+	// stage.releaseMapPosition(this);
 	window.audioManager.play("marine_die");
 }

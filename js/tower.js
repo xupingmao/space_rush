@@ -35,10 +35,29 @@ Tower = function (props) {
         scaleY : scaleY
     });
 
+    this.STOP = new Q.MovieClip({
+        image: towerImage,
+        useFrames : true,
+        interval : 5,
+        x : 0, 
+        y : 0,
+        scaleX : scaleX,
+        scaleY : scaleY
+    })
+
     this.ATK_BEGIN.addFrame([
         {rect : [0, 0, 64, 64]},
         {rect : [64, 0, 64, 64]},
+        {rect : [128, 0, 64, 64]},
+        {rect : [192, 0, 64, 64], stop: true},
     ])
+
+    this.STOP.addFrame([
+        {rect : [192, 0, 64, 64]},
+        {rect : [128, 0, 64, 64]},
+        {rect : [64, 0, 64, 64]},
+        {rect : [0, 0, 64, 64], stop: true}
+    ]);
 
     GameStage.fixProps(props);
     
@@ -51,6 +70,12 @@ Tower = function (props) {
     this.bullets = [];
 
     this.range = 20;
+    this.life = 100;
+    this.state = "stop";
+
+    this.unitType = "tower";
+
+    stage.addUnit(this);
 }
 
 Q.inherit(Tower, Q.DisplayObjectContainer);
@@ -90,20 +115,29 @@ Tower.prototype.update = function (timeInfo) {
             targetRef.target = unit;
             return true;
         }
+    }, function (unit) {
+        return unit.unitType == "marine";
     });
 
     var target = targetRef.target;
 
     if (target == null) {
+        this.removeAllChildren();
+        this.addChild(this.STOP);
+        this.state = "stop";
         return;
+    } else if (this.state == "stop") {
+        this.removeAllChildren();
+        this.addChild(this.ATK_BEGIN);
+        this.state = "atk";
     }
 
     // Q.trace("tower target: ", target);
 
     if (this.bullets.length == 0) {
         var x = this.x + this.width / 2;
-        var y = this.y + this.height / 2;
-        var bullet = new TowerBullet({x: x, y: y});
+        var y = this.y;
+        var bullet = new TowerBullet({cx: x, cy: y});
         // var t = new Tower({x:x,y:y});
         this.parent.addChild(bullet);
         bullet.attack(target);

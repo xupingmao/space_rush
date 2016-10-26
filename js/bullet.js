@@ -3,6 +3,9 @@ var TowerBullet = function(props){
 
     GameStage.fixProps(props);
 
+    props.x = props.cx - MAP_UNIT / 2;
+    props.y = props.cy - MAP_UNIT / 2;
+
     props.image = Q.getDOM("img_tower_bullet");
     props.scaleX = MAP_UNIT / 64;
     props.scaleY = MAP_UNIT / 64;
@@ -33,11 +36,11 @@ TowerBullet.prototype.attack = function (target) {
     this.target = target;
     var self = this;
     
-    var tween = new Q.Tween(this, {x: target.x, y: target.y}, {time: 500, onComplete: function () {
+    var tween = new Q.Tween(this, {x: target.x, y: target.y}, {time: 300, onComplete: function () {
         self.onComplete();
     }});
     tween.start();
-    Q.trace("bullet attack", target);
+    // Q.trace("bullet attack", target);
     target.attacked(this);
 }
 

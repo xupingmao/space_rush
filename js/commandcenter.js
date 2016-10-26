@@ -2,6 +2,7 @@
 CommandCenter = function (props) {
     CommandCenter.superClass.constructor.call(this,props);
     this.init();
+    stage.addUnit(this);
 }
 
 Q.inherit(CommandCenter, Q.DisplayObjectContainer);

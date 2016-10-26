@@ -68,7 +68,6 @@ GameStage.prototype.getPositionY = function(y) {
 GameStage.prototype.initMap = function () {
     this.map = [];
     this.usedPositionList = [];
-    this.towerList = [];
 
     for (var i = 0; i < this.mapWidth; i++) {
         this.map[i] = [];
@@ -177,12 +176,18 @@ function sortObjectList(objectList, key) {
 }
 
 GameStage.prototype.getNearestTower = function (actor) {
-    if (this.towerList.length == 0) {
+    if (this.unitList.length == 0) {
         return null;
     }
     var distance_list = [];
-    for (var i = 0; i < this.towerList.length; i++) {
-        var tower = this.towerList[i];
+    for (var i = 0; i < this.unitList.length; i++) {
+        var tower = this.unitList[i];
+        if (tower == null || tower.life <= 0) {
+            continue;
+        }
+        if (tower.unitType != "tower") {
+            continue;
+        }
         var distance = computeDistance(tower, actor);
         distance_list.push({distance: distance, tower: tower});
     }
@@ -190,18 +195,42 @@ GameStage.prototype.getNearestTower = function (actor) {
     return distance_list[0].tower;
 }
 
-GameStage.prototype.addTower = function (tower) {
-    this.towerList.push(tower);
+GameStage.prototype.setContainer = function (container) {
+    this.container = container;
+    container.removeAllChildren();
+    container.addChild(this.graphics);
+}
+
+GameStage.prototype.updateMap = function () {
+    for (var i = 0; i < this.mapWidth; i++) {
+        for (var j = 0; j < this.mapHeight; j++) {
+            this.map[i][j] = 0;
+        }
+    }
+    // 更新地图，移除死亡的单位
+    for (var i = 0; i < this.unitList.length; i++) {
+        var unit = this.unitList[i];
+        if (unit == null) {
+            continue;
+        }
+        if (unit.life <= 0) {
+            unit.die();
+            this.container.removeChild(unit);
+            this.unitList[i] = null;
+        }
+        this.takeMapPosition(unit);
+    }
 }
 
 GameStage.prototype.update = function (timeInfo) {
     // this.removeChildById("graphics");
+    this.frames++;
 
-    this.frames = (this.frames + 1) % 5;
-
-    if (this.frames != 0) {
+    if (this.frames % 5 != 0) {
         return true;
     }
+
+    this.updateMap();
 
     this.graphics.clear();
     var widthRatio = this.unitWidth;
@@ -241,6 +270,8 @@ GameStage.prototype.update = function (timeInfo) {
 }
 
 GameStage.prototype.addUnit = function (newUnit) {
+    this.fixProps(newUnit);
+    this.container.addChild(newUnit);
     // find a null place
     for (var i = 0; i < this.unitList.length; i++) {
         var unit = this.unitList[i];
@@ -252,7 +283,7 @@ GameStage.prototype.addUnit = function (newUnit) {
     this.unitList.push(newUnit);
 }
 
-GameStage.prototype.eachUnit = function (func) {
+GameStage.prototype.eachUnit = function (func, filter) {
     // Q.trace("eachUnit");
     for (var i = 0; i < this.unitList.length; i++) {
         var unit = this.unitList[i];
@@ -260,12 +291,10 @@ GameStage.prototype.eachUnit = function (func) {
             continue;
         }
         if (unit.life <= 0) {
-            if (unit.parent) {
-                unit.parent.removeChild(unit);
-                unit.die();
-            }
-            // unit.parent.removeChild(unit);
-            this.unitList[i] = null;
+            // updateMap负责移除
+            continue;
+        }
+        if (filter && !filter(unit)) {
             continue;
         }
         var result = func(i, unit);

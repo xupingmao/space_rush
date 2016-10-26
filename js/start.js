@@ -79,38 +79,27 @@ function gameStart () {
 
 	var new_container = animate_new_container();
 	// new_container.addChild(GAME_BG1);
-	new_container.addChild(stage.getMap());
+	
+	stage.setContainer(new_container);
 
 	var startX = 10;
 
 	for (var i = 0; i < stage.mapHeight; i++) {
 		var mleft = new Marine({id: "m1", mapX: startX, mapY: i, state: "right"}); // left
 		var mright = new Marine({mapX: 40, mapY: i});
-		new_container.addChild(mleft);
-		new_container.addChild(mright); 
 	}
 
 	for (var i = 0; i < 20; i++) {
 		var m1 = new Marine({mapX: startX + i, mapY: 0, state: "right"});
 		var m2 = new Marine({mapX: startX + i, mapY: 40});
-		new_container.addChild(m1, m2); 
 	}
 
 	var position = stage.getPosition(-30, 20);
 	var tower = new CommandCenter({id: "mainTower", x: position[0], y: position[1]});
 
-	new_container.addChild(tower);
-	stage.addTower(tower);
-
-	var t1 = new Tower({mapX:15, mapY:10});
-	new_container.addChild(t1);
+	var t1 = new Tower({mapX:15, mapY:10, visible: true});
 
 	var t2 = new Tower({mapX:15,mapY:20});
-	new_container.addChild(t2);
-
-	stage.addTower(t1);
-	stage.addTower(t2);
-
 
 	animate_forward(stage, new_container);
 	// window.stage.removeChildAt(0);

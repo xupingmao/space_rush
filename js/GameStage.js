@@ -304,3 +304,17 @@ GameStage.prototype.eachUnit = function (func, filter) {
         }
     }
 }
+
+GameStage.prototype.clear = function() {
+    // 更新地图，移除死亡的单位
+    for (var i = 0; i < this.unitList.length; i++) {
+        var unit = this.unitList[i];
+        if (unit == null) {
+            continue;
+        }
+        // unit.die();
+        this.container.removeChild(unit);
+        this.unitList[i] = null;
+    }
+    this.unitList = [];
+};

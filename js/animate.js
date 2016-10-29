@@ -38,11 +38,12 @@ function animate_back() {
     var delay_time = 200;
 
     var tween1 = new Q.Tween(target, {x : 0}, {time:delay_time});
-    var tween2 = new Q.Tween(now, {x: GameStage.width},          {time:delay_time});
+    var tween2 = new Q.Tween(now,    {x: GameStage.width},          {time:delay_time});
 
     tween1.start();
     tween2.start();
 
+    now.cache(); // 缓存当前的页面，不再重新渲染和执行逻辑
     stage.children.push(now);
     stage.children.push(target);
     // stage.addChild(new_container);

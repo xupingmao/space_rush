@@ -1,33 +1,38 @@
 
+function newControlText (x, y) {
+    return new Q.Text({
+        x : x,
+        y : y,
+        font : "25px arial",
+        color: "blue"
+    });
+}
+
 function GameReporter() {
     var props = {};
 
     GameReporter.superClass.constructor.call(this, props);
 
-    var unitText = new Q.Text({
-        x : 0,
-        y : 0,
-    });
+    var fpsText = newControlText(MAP_UNIT * 10, 0);
+    var marineText = newControlText(0, MAP_UNIT * 2);
+    var marineAtkText = newControlText(MAP_UNIT * 10, MAP_UNIT* 2);
 
-    var fpsText = new Q.Text({
-        x : MAP_UNIT * 10,
-        y : 0
-    });
-
-    
     this.mapX = -20;
     this.mapY = 0;
     this.mapWidth = 20;
-    this.mapHeight = 2;
+    this.mapHeight = 4;
 
-    this.unitText = unitText;
     this.fpsText = fpsText;
 
+    this.marineText = marineText;
+    this.marineAtkText = marineAtkText;
+    
     this.life = 100;
     this.unitType = "reporter";
 
-    this.addChild(unitText);
     this.addChild(fpsText);
+    this.addChild(marineText);
+    this.addChild(marineAtkText);
 
     stage.addUnit(this);
 
@@ -43,21 +48,13 @@ GameReporter.prototype.update = function () {
     if (stage.frames % 5 != 0) {
         return;
     }
-    var unitText = this.unitText;
 
     var count = 0;
     stage.eachUnit(function (i, unit) {
         count++;
     });
 
-    unitText.text = "unit: " + count;
-    // text.text = "Hello,World";
-    unitText.font = "25px arial";
-    unitText.color = "blue";
-
-    var fpsText = this.fpsText;
-    fpsText.font = "25px arial";
-    fpsText.color = "blue";
+    this.marineText.text = "unit: " + count;
 }
 
 function InitControlBar(container) {
@@ -88,6 +85,7 @@ function InitControlBar(container) {
     controlBar.mapHeight = GameStage.mapHeight;
 
     stage.addUnit(controlBar);
+    stage.addUnit(CTRL_BACK_BTN);
     
     new GameReporter();
 }

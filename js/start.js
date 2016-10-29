@@ -31,6 +31,10 @@ function init(){
 	em = new Q.EventManager();
 	
 	em.registerStage(stage, events, true, true);
+
+	// 初始化资源
+	buttonsInit();
+
 	welcome();
 	
 }
@@ -55,20 +59,6 @@ function welcome() {
 	
 	// START_AUDIO.play();
 	audioManager.play("start");
-
-	START_BTN.addEventListener(MOUSEDOWN_EVENT,function(){
-		// stage.removeChild(marine);
-		// stage.removeChild(m2);
-		gameStart();
-	});
-	ABOUT_BTN.addEventListener(MOUSEDOWN_EVENT,function(){
-		displayAboutInformation();
-	});
-
-	BACK_BTN.addEventListener(MOUSEDOWN_EVENT, function() {
-		animate_back();
-		// welcome();
-	});
 }
 
 
